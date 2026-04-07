@@ -142,6 +142,7 @@ const { anticallCommand, readState: readAnticallState } = require('./commands/an
 const { pmblockerCommand, readState: readPmBlockerState } = require('./commands/pmblocker');
 const settingsCommand = require('./commands/settings');
 const soraCommand = require('./commands/sora');
+const broadcastCommand = require('./commands/broadcast');
 
 // Global settings
 global.packname = settings.packname;
@@ -640,6 +641,10 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('.lyrics'):
                 const songTitle = userMessage.split(' ').slice(1).join(' ');
                 await lyricsCommand(sock, chatId, songTitle, message);
+                break;
+           case userMessage.startsWith('.broadcast'):
+                const broadcastText = rawText; // Use rawText to keep capitalization
+                await broadcastCommand(sock, chatId, senderId, broadcastText, message);
                 break;
             case userMessage.startsWith('.simp'):
                 const quotedMsg = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
